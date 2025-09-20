@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Hash; // 🔑 Importante
 
 class AuthController extends Controller
 {
@@ -16,20 +17,20 @@ class AuthController extends Controller
     // Procesar login
     public function login(Request $request)
     {
-        $credentials = $request->only('username', 'password');
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
 
-        $user = Usuario::where('username', $credentials['username'])
-                       ->where('password', $credentials['password']) // ⚠️ sin hash aún
-                       ->first();
+        $user = Usuario::where('username', $request->username)->first();
 
-        if ($user) {
-            
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Contraseña correcta
             $request->session()->put('user', $user);
-
             return redirect()->route('dashboard');
-        } else {
-            return back()->withErrors(['login' => 'Usuario o contraseña incorrectos']);
         }
+
+        return back()->withErrors(['login' => 'Usuario o contraseña incorrectos']);
     }
 
     // Cerrar sesión

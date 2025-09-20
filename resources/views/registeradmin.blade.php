@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrar Cliente</title>
+  <title>Registrar Administrador</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
@@ -14,11 +14,11 @@
 </head>
 <body class="h-screen flex text-white">
 
- 
-  <aside class="w-60 bg-black p-4 flex flex-col">
-    <h2 class="text-base font-bold mb-6">Panel de Control</h2>
-    <nav class="flex flex-col gap-2 text-xs">
-      <!-- Administradores con submenú -->
+<!-- Sidebar -->
+<aside class="w-60 bg-black p-4 flex flex-col">
+  <h2 class="text-base font-bold mb-6">Panel de Control</h2>
+  <nav class="flex flex-col gap-2 text-xs">
+    <!-- Administradores con submenú -->
     <div class="relative">
       <button id="adminButton" 
               class="w-full text-left hover:bg-gray-800 rounded-md px-3 py-2 flex items-center justify-between">
@@ -37,8 +37,11 @@
         </a>
       </div>
     </div>
-      <a href="#" class="hover:bg-gray-800 rounded-md px-3 py-2">👥 Clientes</a>
-      <!-- Configuración con submenú -->
+
+    <a href="{{ route('customers.index') }}" class="hover:bg-gray-800 rounded-md px-3 py-2">👥 Clientes</a>
+    <!--a href="#" class="hover:bg-gray-800 rounded-md px-3 py-2">💳 Pagos</a-->
+
+    <!-- Configuración con submenú -->
     <div class="relative">
       <button id="configButton" 
               class="w-full text-left hover:bg-gray-800 rounded-md px-3 py-2 flex items-center justify-between">
@@ -59,71 +62,76 @@
   </nav>
 </aside>
 
-  
-  <main class="flex-1 flex items-start justify-center p-8 overflow-y-auto">
+<!-- Contenido principal -->
+<main class="flex-1 flex items-start justify-center p-8 overflow-y-auto">
+  <div class="bg-black bg-opacity-95 shadow-lg rounded-xl p-6 w-[850px]">
+      <h1 class="text-xl font-bold text-center mb-6">Registrar Administrador</h1>
 
-   
-    <div class="bg-black bg-opacity-95 shadow-lg rounded-xl p-6 w-[600px]">
+      @if(session('success'))
+        <div class="bg-green-600 text-white p-2 rounded mb-4">
+          {{ session('success') }}
+        </div>
+      @endif
 
-     
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-xl font-bold">Registrar Cliente Nuevo</h1>
-        <a href="dashboard" class="text-sm text-blue-400 hover:underline">⬅ Volver</a>
-      </div>
+      @if($errors->any())
+        <div class="bg-red-600 text-white p-2 rounded mb-4">
+          <ul>
+            @foreach($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
 
-     
-      <form action="{{ route('customers.store') }}" method="POST" class="space-y-4">
-  @csrf
-  <div>
-    <label class="block text-sm mb-1">Cédula</label>
-    <input type="text" name="cedula" required
-           class="w-full p-2 rounded bg-gray-800 text-white border border-gray-700">
-  </div>
+      <form method="POST" action="{{ route('usuarios.store') }}" class="space-y-4">
+        @csrf
 
-  <div>
-    <label class="block text-sm mb-1">Nombres</label>
-    <input type="text" name="name" required
-           class="w-full p-2 rounded bg-gray-800 text-white border border-gray-700">
-  </div>
+        <div>
+          <label class="block text-sm mb-1">Nombre de Usuario</label>
+          <input type="text" name="username" required
+                 class="w-full p-2 rounded bg-gray-800 text-white border border-gray-700">
+        </div>
 
-  <div>
-    <label class="block text-sm mb-1">Apellidos</label>
-    <input type="text" name="lastname" required
-           class="w-full p-2 rounded bg-gray-800 text-white border border-gray-700">
-  </div>
+        <div>
+          <label class="block text-sm mb-1">Contraseña</label>
+          <input type="password" name="password" required
+                 class="w-full p-2 rounded bg-gray-800 text-white border border-gray-700">
+        </div>
 
-  <div>
-    <label class="block text-sm mb-1">Celular</label>
-    <input type="tel" name="phone" required
-           class="w-full p-2 rounded bg-gray-800 text-white border border-gray-700">
-  </div>
+        <div>
+          <label class="block text-sm mb-1">Confirmar Contraseña</label>
+          <input type="password" name="password_confirmation" required
+                 class="w-full p-2 rounded bg-gray-800 text-white border border-gray-700">
+        </div>
 
-  <div>
-    <label class="block text-sm mb-1">Correo</label>
-    <input type="email" name="email" required
-           class="w-full p-2 rounded bg-gray-800 text-white border border-gray-700">
-  </div>
+      <div>
+  <label class="block text-sm mb-1">Tipo de Usuario</label>
+  <select name="usertipo" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-700" required>
+    <option value="" disabled selected>Seleccione la categoría</option>
+    <option value="AD">Administrador</option>
+    <option value="CL">Cliente</option>
+  </select>
+</div>
 
 
-  <div class="flex justify-end gap-3 pt-4">
-    <a href="{{ route('dashboard') }}" 
+
+
+        <div class="flex justify-end gap-3 pt-4">
+          <a href="{{ route('dashboard') }}" 
        class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-semibold">
        Cancelar
     </a>
-    <button type="submit" 
-            class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-semibold">
-      Guardar Cliente
-    </button>
-  </div>
-</form>
-
-
+          <button type="submit" 
+                  class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-semibold">
+            Guardar
+          </button>
+        </div>
+      </form>
     </div>
   </main>
 
-  <!-- Scripts -->
-<script>
-    // Menú configuración
+  <script>
+      // Menú configuración
   const configButton = document.getElementById("configButton");
   const configMenu = document.getElementById("configMenu");
 
@@ -148,6 +156,7 @@
       adminMenu.classList.add("hidden");
     }
   });
-</script>
+  </script>
+
 </body>
 </html>

@@ -15,112 +15,116 @@
 </head>
 <body class="h-screen flex text-white">
 
-
+<!-- Sidebar -->
 <aside class="w-60 bg-black p-4 flex flex-col">
-  <h2 class="text-base font-bold mb-6">Dashboard</h2>
+  <h2 class="text-base font-bold mb-6">Panel de Control</h2>
   <nav class="flex flex-col gap-2 text-xs">
-    <a href="#" class="hover:bg-gray-800 rounded-md px-3 py-2">🏠 Dashboard</a>
-    <a href="#" class="hover:bg-gray-800 rounded-md px-3 py-2">👥 Clientes</a>
-    <a href="#" class="hover:bg-gray-800 rounded-md px-3 py-2">💳 Pagos</a>
-    <a href="#" class="hover:bg-gray-800 rounded-md px-3 py-2">⚙️ Configuración</a>
+
+    <!-- Administradores con submenú -->
+    <div class="relative">
+      <button id="adminButton" 
+              class="w-full text-left hover:bg-gray-800 rounded-md px-3 py-2 flex items-center justify-between">
+        🏠 Administradores
+        <span>▼</span>
+      </button>
+      <div id="adminMenu" class="hidden absolute left-0 mt-1 w-52 bg-gray-900 rounded-md shadow-lg z-50">
+        <a href="{{ route('usuarios.index') }}" 
+   class="block px-4 py-2 text-sm hover:bg-gray-700">
+   📋 Lista de Admin
+</a>
+
+        <a href="{{ route('usuarios.create') }}" 
+           class="block px-4 py-2 text-sm hover:bg-gray-700">
+           ➕ Registrar Usuario
+        </a>
+      </div>
+    </div>
+
+    <!-- Clientes -->
+    <a href="{{ route('customers.index') }}" class="hover:bg-gray-800 rounded-md px-3 py-2">👥 Clientes</a>
+
+    <!-- Configuración con submenú -->
+    <div class="relative mt-2">
+      <button id="configButton" 
+              class="w-full text-left hover:bg-gray-800 rounded-md px-3 py-2 flex items-center justify-between">
+        ⚙️ Configuración
+        <span>▼</span>
+      </button>
+      <div id="configMenu" class="hidden absolute left-0 mt-1 w-48 bg-gray-900 rounded-md shadow-lg z-50">
+        <a href="{{ route('logout') }}" 
+           class="block px-4 py-2 text-sm hover:bg-gray-700">
+           🚪 Cerrar sesión
+        </a>
+        <a href="#" 
+           class="block px-4 py-2 text-sm hover:bg-gray-700">
+           ❓ Ayuda
+        </a>
+      </div>
+    </div>
   </nav>
 </aside>
 
+<!-- Contenido principal -->
+<main class="flex-1 flex items-start justify-center p-8 overflow-y-auto">
+  <div class="bg-black bg-opacity-95 shadow-lg rounded-xl p-6 w-[850px]">
 
- 
-  <main class="flex-1 flex items-start justify-center p-8 overflow-y-auto">
-
-  
-    <div class="bg-black bg-opacity-95 shadow-lg rounded-xl p-6 w-[850px]">
-
-      
-      <div class="flex justify-between items-center mb-6 text-sm">
-        <h1 class="text-xl font-bold">Panel de Control</h1>
-        <div>
-          <span class="mr-3">Usuario conectado: 
-            <strong>{{ session('user')->username ?? 'Invitado' }}</strong>
-          </span>
-          <a href="{{ route('logout') }}" 
-             class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md">
-             Cerrar sesión
-          </a>
-        </div>
+    <!-- Encabezado -->
+    <div class="flex justify-between items-center mb-6 text-sm">
+      <h1 class="text-xl font-bold">Sistema de Gestión para Clientes</h1>
+      <div>
+        <span class="mr-3">Usuario conectado: 
+          <strong>{{ session('user')->username ?? 'Invitado' }}</strong>
+        </span>
       </div>
-
-     
-      <div class="grid grid-cols-3 gap-4 mb-6">
-        <div class="bg-green-900 rounded-xl p-4 text-center shadow-md">
-          <h2 class="text-sm font-semibold mb-1">Clientes Activos</h2>
-          <p class="text-2xl font-bold">321</p>
-        </div>
-        <div class="bg-red-900 rounded-xl p-4 text-center shadow-md">
-          <h2 class="text-sm font-semibold mb-1">Pagos Pendientes</h2>
-          <p class="text-2xl font-bold">28</p>
-        </div>
-        <div class="bg-blue-900 rounded-xl p-4 text-center shadow-md">
-          <h2 class="text-sm font-semibold mb-1">Nuevos Clientes (Mes)</h2>
-          <p class="text-2xl font-bold">35</p>
-        </div>
-      </div>
-
-
-      
-<div class="flex gap-3">
-  <a href="registercustomer" 
-     class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-semibold inline-block">
-    Registrar Cliente Nuevo
-  </a>
-  
-  <a href="{{ route('customers.index') }}"
-               class="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
-                Ver Clientes Registrados
-            </a>
-
-
-
     </div>
-  </main>
 
-  <!-- Scripts para gráficos -->
-  <script>
-    // Gráfico circular
-    new Chart(document.getElementById('pieChart'), {
-      type: 'doughnut',
-      data: {
-        labels: ['Mes (70%)', 'Semana (15%)', 'Día (0%)'],
-        datasets: [{
-          data: [70, 15, 0],
-          backgroundColor: ['#06b6d4', '#ef4444', '#facc15']
-        }]
-      },
-      options: {
-        plugins: { legend: { labels: { color: 'white' } } }
-      }
-    });
+    <!-- Botones de acciones -->
+    <div class="flex gap-3 mb-4">
+      <a href="{{ route('registercustomer') }}" 
+         class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-semibold inline-block">
+        Registrar Cliente Nuevo
+      </a>
+      
+      <a href="{{ route('customers.index') }}"
+         class="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+        Ver Clientes Registrados
+      </a>
+    </div>
 
-    // Gráfico lineal
-    new Chart(document.getElementById('lineChart'), {
-      type: 'line',
-      data: {
-        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
-        datasets: [{
-          label: 'Ingresos',
-          data: [10, 15, 20, 30, 40, 50],
-          borderColor: '#06b6d4',
-          fill: false,
-          tension: 0.3
-        }]
-      },
-      options: {
-        plugins: { legend: { labels: { color: 'white' } } },
-        scales: {
-          x: { ticks: { color: 'white' } },
-          y: { ticks: { color: 'white' } }
-        }
-      }
-    });
-  </script>
+    <!-- Aquí puedes agregar más contenido o widgets de dashboard -->
+
+  </div>
+</main>
+
+<!-- Scripts para los menús desplegables -->
+<script>
+  // Menú configuración
+  const configButton = document.getElementById("configButton");
+  const configMenu = document.getElementById("configMenu");
+
+  configButton.addEventListener("click", () => {
+    configMenu.classList.toggle("hidden");
+  });
+
+  // Menú administradores
+  const adminButton = document.getElementById("adminButton");
+  const adminMenu = document.getElementById("adminMenu");
+
+  adminButton.addEventListener("click", () => {
+    adminMenu.classList.toggle("hidden");
+  });
+
+  // Cerrar menús al hacer clic fuera
+  document.addEventListener("click", (e) => {
+    if (!configButton.contains(e.target) && !configMenu.contains(e.target)) {
+      configMenu.classList.add("hidden");
+    }
+    if (!adminButton.contains(e.target) && !adminMenu.contains(e.target)) {
+      adminMenu.classList.add("hidden");
+    }
+  });
+  
+</script>
 
 </body>
 </html>
-
