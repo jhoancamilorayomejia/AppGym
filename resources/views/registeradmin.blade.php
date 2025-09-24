@@ -65,7 +65,7 @@
 <!-- Contenido principal -->
 <main class="flex-1 flex items-start justify-center p-8 overflow-y-auto">
   <div class="bg-black bg-opacity-95 shadow-lg rounded-xl p-6 w-[850px]">
-      <h1 class="text-xl font-bold text-center mb-6">Registrar Administrador</h1>
+      <h1 class="text-xl font-bold text-center mb-6">Registro de Usuarios</h1>
 
       @if(session('success'))
         <div class="bg-green-600 text-white p-2 rounded mb-4">
