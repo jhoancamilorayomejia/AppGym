@@ -10,9 +10,15 @@ class Usuario extends Model
 
     protected $primaryKey = 'iduser'; // Llave primaria
 
-    public $timestamps = false; // Si tu tabla NO usa created_at/updated_at
+    public $timestamps = false; // Tu tabla no tiene created_at / updated_at
 
     protected $fillable = [
+        'cedula',
+        'name',
+        'lastname',
+        'address',
+        'phone',
+        'email',
         'username',
         'password',
         'usertipo',

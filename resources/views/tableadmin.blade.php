@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <!-- Clientes con submenú -->
+       <!-- Clientes con submenú -->
 <div class="relative mt-2">
   <button id="clientsButton" 
           class="w-full text-left hover:bg-gray-800 rounded-md px-3 py-2 flex items-center justify-between">
@@ -68,7 +68,19 @@
   <main class="flex-1 flex items-start justify-center p-8 overflow-y-auto">
     <div class="bg-black bg-opacity-95 shadow-lg rounded-xl p-6 w-[1200px]">
 
-      <h1 class="text-xl font-bold mb-6">Clientes Registrados</h1>
+      
+
+       <!-- Encabezado -->
+    <div class="flex justify-between items-center mb-6 text-sm">
+     <h1 class="text-xl font-bold mb-6">Administradores Registrados</h1>
+      <div>
+        <span class="mr-3">Usuario conectado: 
+          <strong>{{ session('user')->username ?? 'Invitado' }}</strong>
+        </span>
+      </div>
+    </div>
+
+    
 
       @if(session('success'))
         <div class="mb-4 px-4 py-2 bg-green-600 text-white text-sm rounded-md shadow fade-transition">
@@ -111,28 +123,18 @@
                 <td class="px-4 py-2 border border-gray-700">{{ $usuario->email }}</td>
                 <td class="px-4 py-2 border border-gray-700">{{ $usuario->usertipo }}</td>
                 <td class="px-4 py-2 border border-gray-700 flex gap-1">
-    <!-- Botón para historial -->
-  <a href="{{ route('payments.history', $usuario->iduser) }}" 
-   class="bg-gray-500 px-2 py-1 rounded text-xs hover:bg-gray-700 text-center">
-   Historial
-</a>
-
-
-
     <!-- Botón Editar -->
     <button 
         onclick="openEditModal({{ $usuario->iduser }}, '{{ $usuario->username }}', '{{ $usuario->name }}', '{{ $usuario->lastname }}', '{{ $usuario->phone }}', '{{ $usuario->email }}')"
         class="bg-blue-600 px-2 py-1 rounded text-xs hover:bg-blue-800">Editar</button>
 
     <!-- Botón Eliminar -->
-    <form action="{{ route('usuarios.destroy', $usuario->iduser) }}" method="POST" 
-          onsubmit="return confirm('¿Deseas eliminar este usuario?');">
+    <form action="{{ route('usuarios.destroyAdmin', $usuario->iduser) }}" method="POST" onsubmit="return confirm('¿Deseas eliminar este usuario Admin?');">
         @csrf
         @method('DELETE')
         <button type="submit" class="bg-red-600 px-2 py-1 rounded text-xs hover:bg-red-800">Eliminar</button>
     </form>
 </td>
-
               </tr>
             @empty
               <tr>
@@ -141,6 +143,13 @@
             @endforelse
           </tbody>
         </table>
+      </div>
+
+      <div class="flex justify-start gap-1 pt-4">
+        <a href="{{ route('dashboard') }}" 
+          class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+          ← Regresar al Menú
+        </a>
       </div>
 
       <!-- Modal -->
@@ -184,13 +193,6 @@
     </div>
 </div>
 
-
-      <div class="flex justify-start gap-1 pt-4">
-        <a href="{{ route('dashboard') }}" 
-          class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
-          ← Regresar al Menú
-        </a>
-      </div>
 
     </div>
   </main>
@@ -251,7 +253,7 @@ function closeEditModal() {
     modal.classList.remove('flex');
 }
 
- // Menú clientes
+  // Menú clientes
 const clientsButton = document.getElementById("clientsButton");
 const clientsMenu = document.getElementById("clientsMenu");
 
@@ -271,6 +273,7 @@ document.addEventListener("click", (e) => {
     clientsMenu.classList.add("hidden");
   }
 });
+
   </script>
 
 </body>

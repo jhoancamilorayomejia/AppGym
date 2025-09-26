@@ -37,7 +37,24 @@
         </a>
       </div>
     </div>
-      <a href="{{ route('registercustomer') }}" class="hover:bg-gray-800 rounded-md px-3 py-2">👥 Registrar Cliente</a>
+       <!-- Clientes con submenú -->
+<div class="relative mt-2">
+  <button id="clientsButton" 
+          class="w-full text-left hover:bg-gray-800 rounded-md px-3 py-2 flex items-center justify-between">
+    👥 Clientes
+    <span>▼</span>
+  </button>
+  <div id="clientsMenu" class="hidden absolute left-0 mt-1 w-52 bg-gray-900 rounded-md shadow-lg z-50">
+    <a href="{{ route('customers.index') }}" 
+       class="block px-4 py-2 text-sm hover:bg-gray-700">
+       📋 Lista de Clientes
+    </a>
+    <a href="{{ route('usuarios.create') }}" 
+       class="block px-4 py-2 text-sm hover:bg-gray-700">
+       ➕ Agregar Cliente
+    </a>
+  </div>
+</div>
       <!-- Configuración con submenú -->
     <div class="relative">
       <button id="configButton" 
@@ -66,8 +83,9 @@
       <!-- Encabezado -->
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-xl font-bold">
-          Historial de Pagos - {{ $customer->name }} {{ $customer->lastname }}
-        </h1>
+  Historial de Pagos - {{ $usuario->name }} {{ $usuario->lastname }}
+</h1>
+
         <div>
           <span class="bg-green-700 px-3 py-1 rounded-md text-xs font-semibold">
             Total ({{ $payments->count() }})
@@ -135,7 +153,7 @@
       <div class="bg-gray-900 p-4 rounded-lg shadow-md mt-6">
         <h2 class="text-lg font-semibold mb-4">➕ Agregar Nuevo Plan</h2>
 
-        <form id="paymentForm" method="POST" action="{{ route('payments.store', $customer->idcustomer) }}" class="flex flex-col gap-4">
+        <form id="paymentForm" method="POST" action="{{ route('payments.store', $usuario->iduser) }}" class="flex flex-col gap-4">
           @csrf
           <div class="grid grid-cols-4 gap-4">
             <!-- Tipo de plan -->
@@ -185,7 +203,7 @@
       <div class="flex justify-start gap-1 pt-4">
   <a href="javascript:history.back()" 
      class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
-     ← Regresar
+     ← Regresar al Menú
   </a>
 </div>
 
@@ -241,6 +259,27 @@
       adminMenu.classList.add("hidden");
     }
   });
+
+   // Menú clientes
+const clientsButton = document.getElementById("clientsButton");
+const clientsMenu = document.getElementById("clientsMenu");
+
+clientsButton.addEventListener("click", () => {
+  clientsMenu.classList.toggle("hidden");
+});
+
+// Cerrar menús al hacer clic fuera
+document.addEventListener("click", (e) => {
+  if (!configButton.contains(e.target) && !configMenu.contains(e.target)) {
+    configMenu.classList.add("hidden");
+  }
+  if (!adminButton.contains(e.target) && !adminMenu.contains(e.target)) {
+    adminMenu.classList.add("hidden");
+  }
+  if (!clientsButton.contains(e.target) && !clientsMenu.contains(e.target)) {
+    clientsMenu.classList.add("hidden");
+  }
+});
   </script>
 </body>
 </html>

@@ -2,25 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    use HasFactory;
-
-    protected $table = 'payment'; // tu tabla en la BD
-    protected $primaryKey = 'idpay'; // tu PK
+    protected $table = 'payment'; // 👈 asegúrate de que coincida con tu BD
+    protected $primaryKey = 'idpay';
+    public $timestamps = false;
 
     protected $fillable = [
-        'idcliente',
+        'iduser',
         'typeplan',
         'price',
         'datepay',
         'datestart',
         'datefinish',
-        'estado'
+        'estado',
     ];
-
-    public $timestamps = false; // si no tienes created_at y updated_at
 }
+

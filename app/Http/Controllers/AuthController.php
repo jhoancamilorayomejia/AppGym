@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
-use Illuminate\Support\Facades\Hash; // 🔑 Importante
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -25,9 +25,15 @@ class AuthController extends Controller
         $user = Usuario::where('username', $request->username)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            // Contraseña correcta
+            // Guardar usuario en sesión
             $request->session()->put('user', $user);
-            return redirect()->route('dashboard');
+
+            // Redirigir según tipo de usuario
+            if ($user->usertipo === 'AD') {
+                return redirect()->route('dashboard'); // Dashboard normal
+            } elseif ($user->usertipo === 'CL') {
+                return redirect()->route('dashboarduser'); // Nuevo dashboard para cliente
+            }
         }
 
         return back()->withErrors(['login' => 'Usuario o contraseña incorrectos']);
